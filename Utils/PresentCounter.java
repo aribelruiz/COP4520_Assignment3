@@ -9,6 +9,7 @@ public class PresentCounter {
     // }
 
     public synchronized static void decrementPresentsInBag() {
-        presentsInBag--;
+        if (presentsInBag > 0)
+            presentsInBag--;
     }
 }

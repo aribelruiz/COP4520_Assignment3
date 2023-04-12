@@ -20,7 +20,7 @@ public class TemperatureModule {
         for (int i = 0; i < NUM_OF_SENSORS; i++) {
             
             // Creates and joins new servant thread
-            BPServantThread servantThread = new BPServantThread(i);
+            TempModuleThread servantThread = new TempModuleThread(i);
             Thread newThread = new Thread(servantThread);
             newThread.start();
 

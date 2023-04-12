@@ -11,12 +11,13 @@ package Utils;
 
 public class ConcurrentLinkedList<T> {
 
-    // Function inserts a node into the linked list and returns the head
+    // Function removes present from bag, inserts node into the linked list and returns the head
     public synchronized static Node add(Node head, int data){
 
         // Creates a new node with given data
         Node newNode = new Node(data);
-        // PresentCounter.incrementPresentsInBag();
+        PresentCounter.decrementPresentsInBag();
+        ListCounter.incrementPresentsInList();
 
         // If list is empty, make the new node the head
         if(head == null) {
@@ -68,7 +69,9 @@ public class ConcurrentLinkedList<T> {
         if (current != null && current.data == data) {
             head = current.next;
             
-            PresentCounter.decrementPresentsInBag();
+            CardCounter.incrementCardsWritten();
+            ListCounter.decrementPresentsInList();
+
             return head;
         }
 
@@ -84,7 +87,8 @@ public class ConcurrentLinkedList<T> {
         if (current != null){
             // Remove current node from linked list
             prev.next = current.next;
-            PresentCounter.decrementPresentsInBag();
+            CardCounter.incrementCardsWritten();
+            ListCounter.decrementPresentsInList();
         }
         else if (current == null){
             // data not found in list
@@ -122,7 +126,6 @@ public class ConcurrentLinkedList<T> {
             System.out.print(current.data + " ");
             current = current.next;
         }
-
-        System.out.println("\n");
+        System.out.println("");
     };
 }
