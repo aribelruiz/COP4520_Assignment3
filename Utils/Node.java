@@ -1,4 +1,4 @@
-package LinkedList;
+package Utils;
 
 // Aribel Ruiz
 // 04/13/2023

@@ -10,8 +10,10 @@
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import LinkedList.LinkedList;
-import LinkedList.Node;
+
+import Utils.Node;
+import Utils.ConcurrentLinkedList;
+import Utils.PresentCounter;
 
 public class BirthdayPresents {
 
@@ -20,6 +22,7 @@ public class BirthdayPresents {
     public static final int NUM_OF_GUESTS = 10;
 
     public static Node head = null;
+    public static int presentsInBag = 0;
     
     // ========================================= Functions =========================================
     public static void main(String[] args) {
@@ -39,14 +42,19 @@ public class BirthdayPresents {
         }
         System.out.println("\n");
 
-        // Adding all presents to linked list
-        for (int num : presentList) {
-            head = LinkedList.add(head, num);
-        }
+        // ================================== TESTING LINKED LIST ==================================
+        // // ================= Testing add() =================
+        // System.out.println("Present List (Linked List): ");
+        // for (int num : presentList) {
+        //     head = ConcurrentLinkedList.add(head, num);
+        // }
+        // ConcurrentLinkedList.printList(head);
 
-        // Printing Linked List of sorted gifts
-        System.out.println("Present List (Linked List): ");
-        LinkedList.printList(head);
+        // // ================= Testing remove() =================
+        // System.out.println("presents before remove: " + PresentCounter.presentsInBag);
+        // head = ConcurrentLinkedList.remove(head, 10);
+        // System.out.println("presents after remove: " + PresentCounter.presentsInBag);
+        // System.out.println("");
         
         for (int i = 0; i < NUM_OF_SERVANTS; i++) {
             

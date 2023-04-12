@@ -1,4 +1,4 @@
-package LinkedList;
+package Utils;
 
 // Aribel Ruiz
 // 04/13/2023
@@ -9,13 +9,14 @@ package LinkedList;
 //      This program is the implementation of a thread-safe Linked List with synchronized add, 
 //      remove, contains, and print methods.
 
-public class LinkedList<T> {
+public class ConcurrentLinkedList<T> {
 
     // Function inserts a node into the linked list and returns the head
     public synchronized static Node add(Node head, int data){
 
         // Creates a new node with given data
         Node newNode = new Node(data);
+        PresentCounter.incrementPresentsInBag();
 
         // If list is empty, make the new node the head
         if(head == null) {
@@ -65,9 +66,9 @@ public class LinkedList<T> {
 
         // If the head is to be deleted, change the head
         if (current != null && current.data == data) {
-            System.out.println("removing head: " + head.data + " to current:" + current.next.data);
             head = current.next;
-            System.out.println("new head: " + head.data);
+            
+            PresentCounter.decrementPresentsInBag();
             return head;
         }
 
@@ -83,6 +84,7 @@ public class LinkedList<T> {
         if (current != null){
             // Remove current node from linked list
             prev.next = current.next;
+            PresentCounter.decrementPresentsInBag();
         }
         else if (current == null){
             // data not found in list
