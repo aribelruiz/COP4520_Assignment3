@@ -16,7 +16,7 @@ public class ConcurrentLinkedList<T> {
 
         // Creates a new node with given data
         Node newNode = new Node(data);
-        PresentCounter.incrementPresentsInBag();
+        // PresentCounter.incrementPresentsInBag();
 
         // If list is empty, make the new node the head
         if(head == null) {

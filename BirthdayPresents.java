@@ -19,7 +19,7 @@ public class BirthdayPresents {
 
     // ====================================== Class Variables ======================================
     public static final int NUM_OF_SERVANTS = 4;
-    public static final int NUM_OF_GUESTS = 10;
+    public static final int NUM_OF_PRESENTS = 10;
 
     public static Node head = null;
     public static int presentsInBag = 0;
@@ -29,7 +29,7 @@ public class BirthdayPresents {
         System.out.println("Problem 1: Birthday Presents Party!\n");
 
         // Creating a list of sequential numbers representing all gifts in the bag
-        List<Integer> presentList = IntStream.rangeClosed(0, 10)
+        List<Integer> presentList = IntStream.rangeClosed(1, 10)
         .boxed().collect(Collectors.toList());
 
         // Shuffling present list so bag of presents is unordered
@@ -54,8 +54,11 @@ public class BirthdayPresents {
         // System.out.println("presents before remove: " + PresentCounter.presentsInBag);
         // head = ConcurrentLinkedList.remove(head, 10);
         // System.out.println("presents after remove: " + PresentCounter.presentsInBag);
+        
+        // ConcurrentLinkedList.printList(head);
         // System.out.println("");
         
+
         for (int i = 0; i < NUM_OF_SERVANTS; i++) {
             
             // Creates and joins new servant thread
