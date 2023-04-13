@@ -27,7 +27,8 @@ public class ConcurrentLinkedList<T> {
             // If head is greater than data, make newNode the new head
             if (data < head.data){
                 newNode.next = head;
-                head = newNode;                
+                head = newNode;        
+                
                 return head;
             }
 
@@ -36,12 +37,13 @@ public class ConcurrentLinkedList<T> {
             Node temp = prev.next;
             while (prev.next != null){    
                 
-                // if next node data is greater than or equal to data, insert data before next                
+                // if next node data is greater than data, insert data before next                
                 if (prev.next.data > data){
                     
                     // Updating links for new inserted node
                     prev.next = newNode;
                     newNode.next = temp;
+
                     return head;
                 }
 
@@ -65,7 +67,7 @@ public class ConcurrentLinkedList<T> {
         Node current = head;
         Node prev = null;
 
-        // If the head is to be deleted, change the head
+        // Delete and change the head
         if (current != null && current.data == data) {
             head = current.next;
             
@@ -96,24 +98,6 @@ public class ConcurrentLinkedList<T> {
         }
 
         return head;
-    };
-
-    // Function searches for data in list and return true if found, returns false otherwise
-    public synchronized static boolean contains (Node head, int data){
-        
-        Node current = head;
-
-        while (current != null)
-        {
-            // Return true if data found in list
-            if (current.data == data){
-                return true;
-            }
-            current = current.next;
-        }
-        
-        // If data not found in list, return false
-        return false;
     };
 
      // Function prints all data from nodes in a linked list

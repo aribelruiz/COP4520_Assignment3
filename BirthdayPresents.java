@@ -7,7 +7,10 @@
 //      Concepts of Parallel and Distributed Processing Assignment 3. 
 //      This program simulates a solution for Problem 1 of Assignment 3, Birthday Presents Party.
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -21,11 +24,14 @@ public class BirthdayPresents {
 
     // ====================================== Class Variables ======================================
     public static final int NUM_OF_SERVANTS = 4;
-    public static final int NUM_OF_PRESENTS = 10;
+    public static final int NUM_OF_PRESENTS = PresentCounter.presentsInBag;
+    public static boolean DEBUG = false;
 
     // Creating a list of sequential numbers representing all gifts in the bag
-    public static List<Integer> presentList = IntStream.rangeClosed(1, 10)
+    public static List<Integer> presentList = IntStream.rangeClosed(1, NUM_OF_PRESENTS)
     .boxed().collect(Collectors.toList());
+
+    public static ConcurrentHashMap<Integer, Integer> presentBagHash = new ConcurrentHashMap<Integer, Integer>();
 
     public static Node head = null;
     public static int task = 0;
@@ -36,22 +42,39 @@ public class BirthdayPresents {
     
     // ========================================= Functions =========================================
     public static void main(String[] args) {
-        System.out.println("Problem 1: Birthday Presents Party!\n");
+
+        if (DEBUG)
+            System.out.println("Problem 1: Birthday Presents Party!\n");
 
         // Shuffling present list so bag of presents is unordered
         Collections.shuffle(presentList);
 
-        // Printing bag of presents list
-        System.out.println("Present List (unsorted): ");
-        for (int num : presentList) {
-            System.out.print(num + " ");
+        if (DEBUG) {
+            // Printing bag of presents list
+            System.out.println("Present List (unsorted): ");
+            for (int num : presentList) {
+                System.out.print(num + " ");
+            }
+            System.out.println("\n");
         }
-        System.out.println("\n");
 
+        // Adding list to hash set for better complexity (checking if list contains before searching)
+        for (int num : presentList) {
+            presentBagHash.put(num, num);
+        }
+
+        if (DEBUG) {
+            // Printing hash set
+            System.out.println("Present List (Hash Set): ");
+            System.out.println(presentBagHash);
+            System.out.print(" ");
+        }
+   
         // Setting servantLastAdded[] to random booleans to start
         Random rand = new Random();
         int randBool;
-        System.out.println("servantsLastAdded[]: ");
+
+        // Iterates through servantLastAdded to randomize boolean values
         for (int i = 0; i < servantLastAdded.length; i++) {
             // Gets random int (0 represents false, 1 represents true)
             randBool = rand.nextInt(2);
@@ -59,28 +82,14 @@ public class BirthdayPresents {
             if (randBool == 1){
                 servantLastAdded[i] = true;
             }
-            System.out.println(servantLastAdded[i]);
         }
 
-        // ================================== TESTING LINKED LIST ==================================
-        // // ================= Testing add() =================
-        // System.out.println("Present List (Linked List): ");
-        // for (int num : presentList) {
-        //     head = ConcurrentLinkedList.add(head, num);
-        // }
-        // ConcurrentLinkedList.printList(head);
-
-        // // ================= Testing remove() =================
-        // System.out.println("presents before remove: " + PresentCounter.presentsInBag);
-        // head = ConcurrentLinkedList.remove(head, 1);
-        // head = ConcurrentLinkedList.remove(head, 10);
-        // System.out.println("presents after remove: " + PresentCounter.presentsInBag);
+        if (DEBUG)
+            System.out.println("=============================== LOOP ===============================");
         
-        // ConcurrentLinkedList.printList(head);
-        // System.out.println("");
+        // Starts timer
+        long start = System.nanoTime();
 
-        System.out.println("=============================== LOOP ===============================");
-        
         // Loops until both the present bag and linked list are empty
         do {
     
@@ -117,19 +126,30 @@ public class BirthdayPresents {
                 }
             }
 
-            System.out.println("List after iteration:");
-            ConcurrentLinkedList.printList(head);
-            System.out.println("=========================== ITERATION ===========================");
-
+            if (DEBUG) {
+                System.out.println("List after iteration:");
+                ConcurrentLinkedList.printList(head);
+                System.out.println("=========================== ITERATION ===========================");
+            }
         }
         while (PresentCounter.presentsInBag != 0 || ListCounter.presentsInList != 0);
 
-        System.out.println("List after while:");
-        ConcurrentLinkedList.printList(head);
-        System.out.println("");
+        // Ends timer
+        long end = System.nanoTime();
+
+        // Prints execution time
+        NumberFormat formatter = new DecimalFormat("#0.00000");
+        System.out.println("Execution time: " + formatter.format((end - start) / 1000000000d) + "s");
+        System.out.println("Number of Servants (Threads): " + NUM_OF_SERVANTS + "\n");
 
         System.out.println("Number of Presents: " + NUM_OF_PRESENTS);
         System.out.println("Cards Written: " + CardCounter.cardsWritten);
         System.out.println("");
+
+        if (DEBUG) {
+            System.out.println("List after while:");
+            ConcurrentLinkedList.printList(head);
+            System.out.println("");
+        }
     }
 }

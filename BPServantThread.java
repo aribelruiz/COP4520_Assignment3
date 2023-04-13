@@ -1,9 +1,3 @@
-import java.util.Random;
-
-import Utils.ConcurrentLinkedList;
-import Utils.ListCounter;
-import Utils.PresentCounter;
-
 // Aribel Ruiz
 // 04/13/2023
 
@@ -11,6 +5,12 @@ import Utils.PresentCounter;
 // COP4520 : Servant Thread for Birthday Presents Party (BPServantThread.java)
 // ==========================================================================
 //      This program represents each of the Minotaur's servants helping him as a thread.
+
+import java.util.Random;
+
+import Utils.ConcurrentLinkedList;
+import Utils.ListCounter;
+import Utils.PresentCounter;
 
 public class BPServantThread implements Runnable {
     // ====================================== Class Variables ======================================
@@ -26,7 +26,9 @@ public class BPServantThread implements Runnable {
 
     @Override
     public synchronized void run() {
-        System.out.println("\nBPServantThread number: " + threadNumber);
+
+        if (BirthdayPresents.DEBUG)
+            System.out.println("\nBPServantThread number: " + threadNumber);
         
         // Servant executes given task 
         switch(task) {
@@ -48,61 +50,82 @@ public class BPServantThread implements Runnable {
     }
 
     // Function takes a present from unordered bag and adds it to linked list
-    public void addPresent() {
+    public synchronized void addPresent() {
 
-        System.out.println("Servant " + threadNumber + " doing add()");
-        System.out.println("presentsInBag: " + PresentCounter.presentsInBag);
+        if (BirthdayPresents.DEBUG) {
+            System.out.println("Servant " + threadNumber + " doing add()");
+            System.out.println("presentsInBag: " + PresentCounter.presentsInBag);
+        }
 
         if (PresentCounter.presentsInBag > 0) {
             // Getting present from unordered list and remove from unordered list
             int present = BirthdayPresents.presentList.get(0);
             BirthdayPresents.presentList.remove(0);
+            BirthdayPresents.presentBagHash.remove(present);
 
-            // Prints for TESTING
-            System.out.println("Servant " + threadNumber + " adding " + present);
-            System.out.println("Present List (unsorted): ");
-            for (int num : BirthdayPresents.presentList) {
-                System.out.print(num + " ");
+            if (BirthdayPresents.DEBUG) {
+                // Prints for TESTING
+                System.out.println("Servant " + threadNumber + " adding " + present);
+                System.out.println("Present List (unsorted): ");
+                for (int num : BirthdayPresents.presentList) {
+                    System.out.print(num + " ");
+                }
+                System.out.println("\nPresent List (Hash Set): ");
+                System.out.println(BirthdayPresents.presentBagHash);
             }
 
             // Adding present from unordered list to linked list
             BirthdayPresents.head = ConcurrentLinkedList.add(BirthdayPresents.head, present);
 
-            // Prints of TESTING
-            System.out.println("\nPresent List (Linked List): ");
-            ConcurrentLinkedList.printList(BirthdayPresents.head);
+            if (BirthdayPresents.DEBUG) {
+                // Prints of TESTING
+                System.out.println("\nPresent List (Linked List): ");
+                ConcurrentLinkedList.printList(BirthdayPresents.head);
+            }
         }
     }
 
     // Function takes a present from head of linked list and removes it (writes thank you card)
-    public void removePresent() {
+    public synchronized void removePresent() {
 
-        System.out.println("Servant " + threadNumber + " doing remove()");
+        if (BirthdayPresents.DEBUG)
+            System.out.println("Servant " + threadNumber + " doing remove()");
 
         if (ListCounter.presentsInList > 0) {
             int present = BirthdayPresents.head.data;
 
-            System.out.println("Servant " + threadNumber + " removing " + present);
+            // Print for TESTING
+            if (BirthdayPresents.DEBUG)
+                System.out.println("Servant " + threadNumber + " removing " + present);
+
             BirthdayPresents.head = ConcurrentLinkedList.remove(BirthdayPresents.head, present);
         }
     }
 
     // Function checks if random present is in linked list
-    public void checkPresent() {
+    public synchronized void checkPresent() {
 
-        System.out.println("Servant " + threadNumber + " doing check()");
+        if (BirthdayPresents.DEBUG)
+            System.out.println("Servant " + threadNumber + " doing check()");
 
         Random rand = new Random(); 
         int present = rand.nextInt(BirthdayPresents.NUM_OF_PRESENTS);
 
-        boolean presentInList = ConcurrentLinkedList.contains(BirthdayPresents.head, present);
+        if (BirthdayPresents.presentBagHash.size() > 0) {
 
-        if (presentInList){
-            System.out.println("Present #" + present + " FOUND in linked list.");
+            // If the present is not in the bag, it is in the list
+            boolean presentInList = !BirthdayPresents.presentBagHash.containsKey(present);
+    
+            if (BirthdayPresents.DEBUG) {
+                
+                // Prints for TESTING
+                if (presentInList){
+                    System.out.println("Present #" + present + " FOUND in linked list.");
+                }
+                else {
+                    System.out.println("Present #" + present + " NOT FOUND in linked list.");
+                }
+            }
         }
-        else {
-            System.out.println("Present #" + present + " NOT FOUND in linked list.");
-        }
-
     }
 }
