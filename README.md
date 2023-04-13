@@ -56,3 +56,22 @@ To improve efficiency, I only ever removed the head of the linked list when call
 Adding a present to the linked list takes O(N) in the worst-case runtime. The efficiency of the add() method could not be improved because the chain of presents must be traversed to search for the correct place to insert the present for the chain to be sorted in incrementing order.
 
 To improve the runtime of the contains() and delete() methods, I created a hash map containing the numbers associated with the presents within the bag. A hash map has O(1) lookup, so to improve the efficiency of contains() and delete(), I checked to see if the present is in the bag of presents before traversing. If the present is in the bag of presents, there is no need to traverse the list because the present will not be in the list. Therefore, anytime the contains() method is called by a thread, the contains() method only traverses through the list if the present is not in the bag. This improves the efficiency of the program because, in scenarios where the present is absent from the list, the contains() method will take O(1) instead of O(N) to search the entire list and find nothing.
+
+# Problem 2: Atmospheric Temperature Reading Module
+## How to Run Program 2 (Problem 2)
+This program was written using java. To run problem 2, cd into the appropriate directory of the project and enter the following into the command line:
+
+    javac TemperatureModule.java && java TemperatureModule
+
+## Program Description (Problem 2)
+The program for problem 2 simulates the design of a module responsible for measuring the atmospheric temperature of the next-generation Mars Rover, equipped with a multicore CPU and 8 temperature reading sensors. The module is simulated by using concurrent threads; where each thread represents a temperature reading sensor. The program simulated the data storage and retrieval of memory shared among all the threads.
+
+### Atmospheric Temperature Reading Module Problem
+A module must be designed responsible for measuring the atmospheric temperature of the next-generation Mars Rover. This next-generation Mars Rover is equipped with a multicore CPU and 8 temperature sensors responsible for collecting temperature readings at regular intervals. The temperature readings are to be stored in a shared memory space and the atmospheric temperature module has to compile a report at the end of every hour. The report compiled must include the top 5 highest temperatures recorded for that hour, the top 5 lowest temperatures recorded for that hour, and the 10-minute interval of time when the largest temperature difference was observed. 
+
+The data storage and retrieval of the shared memory region must be carefully handled and no sensors should be delayed and miss the interval of time when it is supposed to conduct a temperature reading. 
+
+The temperature readings are taken every 1 minute and the solution must be designed using 8 threads.
+
+## Summary of Approach (Problem 2)
+
