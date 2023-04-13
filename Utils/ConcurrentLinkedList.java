@@ -27,8 +27,7 @@ public class ConcurrentLinkedList<T> {
             // If head is greater than data, make newNode the new head
             if (data < head.data){
                 newNode.next = head;
-                head = newNode;        
-                
+                head = newNode;                
                 return head;
             }
 
@@ -43,7 +42,6 @@ public class ConcurrentLinkedList<T> {
                     // Updating links for new inserted node
                     prev.next = newNode;
                     newNode.next = temp;
-
                     return head;
                 }
 
@@ -67,7 +65,7 @@ public class ConcurrentLinkedList<T> {
         Node current = head;
         Node prev = null;
 
-        // Delete and change the head
+        // If the head is to be deleted, change the head
         if (current != null && current.data == data) {
             head = current.next;
             

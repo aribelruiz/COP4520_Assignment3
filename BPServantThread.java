@@ -50,7 +50,7 @@ public class BPServantThread implements Runnable {
     }
 
     // Function takes a present from unordered bag and adds it to linked list
-    public synchronized void addPresent() {
+    public void addPresent() {
 
         if (BirthdayPresents.DEBUG) {
             System.out.println("Servant " + threadNumber + " doing add()");
@@ -86,7 +86,7 @@ public class BPServantThread implements Runnable {
     }
 
     // Function takes a present from head of linked list and removes it (writes thank you card)
-    public synchronized void removePresent() {
+    public void removePresent() {
 
         if (BirthdayPresents.DEBUG)
             System.out.println("Servant " + threadNumber + " doing remove()");
@@ -103,7 +103,7 @@ public class BPServantThread implements Runnable {
     }
 
     // Function checks if random present is in linked list
-    public synchronized void checkPresent() {
+    public void checkPresent() {
 
         if (BirthdayPresents.DEBUG)
             System.out.println("Servant " + threadNumber + " doing check()");
