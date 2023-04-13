@@ -98,6 +98,24 @@ public class ConcurrentLinkedList<T> {
         return head;
     };
 
+    // Function searches for data in list and return true if found, returns false otherwise
+    public synchronized static boolean contains (Node head, int data){
+        
+        Node current = head;
+
+        while (current != null)
+        {
+            // Return true if data found in list
+            if (current.data == data){
+                return true;
+            }
+            current = current.next;
+        }
+        
+        // If data not found in list, return false
+        return false;
+    };
+
      // Function prints all data from nodes in a linked list
      public synchronized static void printList (Node head){
         
