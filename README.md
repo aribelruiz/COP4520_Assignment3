@@ -92,5 +92,11 @@ To test my program I first tested that the threads were working properly. After 
 
 I first included print statements to ensure that my functions returned and did as intended. As I ran my program I ran into casting errors when trying to get the sublist from an ArrayList and set it to a different ArrayList. I realized a sublist returns a List, not an Arraylist, so I had to change the data type of some variables from an ArrayList to a list. Once I did this, I started receiving an error that I believe to be improperly attaining the sublist. Although the ArrayList I tried to obtain a sublist from was not empty and the starting and ending index of the ArrayList were valid, the sublist function kept returning a null List. I'm unsure why this happened and I was unable to solve this error to complete my program.
 
+## Reasoning for Efficiency (Problem 1)
+To improve efficiency I made the most of ArrayLists for dynamic lists instead of static ones. This improved the space complexity of the program when storing reports or temperarure readings.
+
+I also made use of functions in Collections, such as Collections.sort(), for better runtimes on functions. Instead of sorting through an array to find the highest and lowest temperatures, I sorted the arrays using Collections.sort for a logarithmic runtime.
+
+I made sure to do checks before getting temperature readings or creating reports to ensure these functions only ran when a 60-minute interval had passed instead of when every thread began.
 
 
