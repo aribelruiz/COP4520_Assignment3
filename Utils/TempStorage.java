@@ -13,8 +13,6 @@ import java.util.*;
 public class TempStorage {
     // ====================================== Class Variables ======================================
     public static ArrayList<Integer> tempReadings = new ArrayList<Integer>();
-    public static String intervalStr = "";
-
     public static int hourSimulated = 1;
 
     // This array list stores all of the temperature reports every hour
@@ -40,7 +38,6 @@ public class TempStorage {
             createReport(tempReadings60Min, startIndex, endIndex);
         }
     }
-
 
     // Function creates a report using given list
     public static void createReport(ArrayList<Integer> tempReadings60Min, int ogStartIndex, int ogEndIndex) {
@@ -97,6 +94,7 @@ public class TempStorage {
                     top5ForHour = (ArrayList<Integer>) topTempsForHour.subList(start, end);
                 }
 
+                // Gets bottom 5 lowest temperatures
                 ArrayList<Integer> bottom5ForHour = new ArrayList<Integer>();
                 if (bottomTempsForHour.size() >= 5){
                     int start = 0;
@@ -115,7 +113,6 @@ public class TempStorage {
                 System.out.println("");
             }
         }
-
     }
 
     // Function gets report stats of given sublist of 10 minute interval
