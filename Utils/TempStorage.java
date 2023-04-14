@@ -13,7 +13,6 @@ import java.util.*;
 public class TempStorage {
     // ====================================== Class Variables ======================================
     public static ArrayList<Integer> tempReadings = new ArrayList<Integer>();
-    public static int hourSimulated = 1;
 
     // This array list stores all of the temperature reports every hour
     public static List<TempReport> allReports = Collections.synchronizedList(new ArrayList<TempReport>());
@@ -21,18 +20,19 @@ public class TempStorage {
     // ====================================== Class Functions ======================================
    
     // Function checks if temp readings for 60 minutes has been stores to create a report
-    public synchronized static void checkTempReadings(ArrayList<Integer> copyTempReadings) {
+    // Synchronized method allows for multiple threads to access without deadlock or interruptions
+    public synchronized static void checkTempReadings(ArrayList<Integer> copyTempReadings, int hourSimulated) {
 
+        if (copyTempReadings == null)
+            System.out.println("SIZE: " + tempReadings.size());
         // Check if a new hour is complete
         if (copyTempReadings.size() - (hourSimulated * 60) == 0){
-            
-            // Full new hour has been completed. Increment hourSimulated
-            hourSimulated++;
             
             // Getting sublist to create report
             int startIndex = (hourSimulated - 1) * 60;
             int endIndex = (hourSimulated * 60) - 1;
-            ArrayList<Integer> tempReadings60Min = (ArrayList<Integer>) copyTempReadings.subList(startIndex, endIndex);
+
+            List<Integer> tempReadings60Min = copyTempReadings.subList(startIndex, endIndex);
             
             // Creating a report for the hour 
             createReport(tempReadings60Min, startIndex, endIndex);
@@ -40,7 +40,7 @@ public class TempStorage {
     }
 
     // Function creates a report using given list
-    public static void createReport(ArrayList<Integer> tempReadings60Min, int ogStartIndex, int ogEndIndex) {
+    public synchronized static void createReport(List<Integer> tempReadings60Min, int ogStartIndex, int ogEndIndex) {
 
         int tenMinIntervals = 0;
         int startIndex = 0;
@@ -64,7 +64,7 @@ public class TempStorage {
                 endIndex = (tenMinIntervals * 10) - 1;
 
                 // Creating subList for 10 minute interval and calling getReportStats
-                ArrayList<Integer> tempReadings10Min = (ArrayList<Integer>) tempReadings60Min.subList(startIndex, endIndex);
+                List<Integer> tempReadings10Min = tempReadings60Min.subList(startIndex, endIndex);
                 TempReport tempReport10 = getReportStats(tempReadings10Min, ogStartIndex + startIndex, ogEndIndex + endIndex);
 
                 // Update largest difference if new interval has larger difference in temperatures
@@ -78,8 +78,13 @@ public class TempStorage {
                 }
 
                 // Adding top 5 and bottom 5 temps to topTempsForHour and bottomTempsForHour
+                if (tempReport10.highestTemps == null)
+                    System.out.println("NULL");
+
                 topTempsForHour.addAll(tempReport10.highestTemps);
                 bottomTempsForHour.addAll(tempReport10.highestTemps);
+
+                System.out.println("topTempsForHour size: " + topTempsForHour.size());
 
                 // Sorting topTempsForHour and bottomTempsForHour to get top and bottom 5 for hour
                 Collections.sort(topTempsForHour);
@@ -87,20 +92,18 @@ public class TempStorage {
 
                 // Getting top 5 and bottom 5 temps for hour
                 // Gets top 5 highest temperatures
-                ArrayList<Integer> top5ForHour = new ArrayList<Integer>();
-                if (topTempsForHour.size() >= 5){
-                    int end = topTempsForHour.size() - 1; 
-                    int start = topTempsForHour.size() - 5;
-                    top5ForHour = (ArrayList<Integer>) topTempsForHour.subList(start, end);
-                }
+                List<Integer> top5ForHour = new ArrayList<Integer>();
+                int end = topTempsForHour.size() - 1; 
+                int start = topTempsForHour.size() - 5;
+
+                top5ForHour = topTempsForHour.subList(start, end);
+                
 
                 // Gets bottom 5 lowest temperatures
-                ArrayList<Integer> bottom5ForHour = new ArrayList<Integer>();
-                if (bottomTempsForHour.size() >= 5){
-                    int start = 0;
-                    int end = 4; 
-                    bottom5ForHour = (ArrayList<Integer>) bottomTempsForHour.subList(start, end);
-                }
+                List<Integer> bottom5ForHour = new ArrayList<Integer>();
+                start = 0;
+                end = 4; 
+                bottom5ForHour = bottomTempsForHour.subList(start, end);
                 
                 // Creating report for the hour
                 TempReport hourReport = new TempReport(top5ForHour, bottom5ForHour, biggestInterval);
@@ -116,7 +119,7 @@ public class TempStorage {
     }
 
     // Function gets report stats of given sublist of 10 minute interval
-    public static TempReport getReportStats(ArrayList<Integer> tempReadings10Min, int ogStartIndex, int ogEndIndex) {
+    public synchronized static TempReport getReportStats(List<Integer> tempReadings10Min, int ogStartIndex, int ogEndIndex) {
         
         // Gets interval and 10 minute difference
         String interval = "[ " + ogStartIndex + ", " + ogEndIndex + " ]";
@@ -125,16 +128,12 @@ public class TempStorage {
         Collections.sort(tempReadings10Min);  
 
         // Gets top 5 highest temperatures
-        ArrayList<Integer> top5 = new ArrayList<Integer>();
-        if (tempReadings10Min.size() >= 10){
-            top5 = (ArrayList<Integer>) tempReadings10Min.subList(5, 9);
-        }
+        List<Integer> top5 = new ArrayList<Integer>();
+        top5 = tempReadings10Min.subList(5, 9);
 
         // Gets bottom 5 highest temperatures
-        ArrayList<Integer> bottom5 = new ArrayList<Integer>();
-        if (tempReadings10Min.size() >= 5){
-            bottom5 = (ArrayList<Integer>) tempReadings10Min.subList(0, 4);
-        }
+        List<Integer> bottom5 = new ArrayList<Integer>();
+        bottom5 = tempReadings10Min.subList(0, 4);
 
         // Create a report for 10 minute interval
         TempReport tempReport10Min = new TempReport(top5, bottom5, interval, difference);

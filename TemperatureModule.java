@@ -22,17 +22,21 @@ public class TemperatureModule {
     public static void main(String[] args) {
         System.out.println("Problem 2: Temperature Reading Module!");
 
-        for (int i = 0; i < NUM_OF_SENSORS; i++) {
+        // Sensors are forever reading temperatures until program ends
+        while (true) {
+            for (int i = 0; i < NUM_OF_SENSORS; i++) {
 
-            // Creates and joins new servant thread
-            TempModuleThread servantThread = new TempModuleThread(i);
-            Thread newThread = new Thread(servantThread);
-            newThread.start();
-
-            try {
-                newThread.join();
-            } catch (Exception e) {
-                System.out.println("\nAn error occured joning a thread.");
+                // Creates and joins new servant thread
+                TempModuleThread servantThread = new TempModuleThread(i);
+                Thread newThread = new Thread(servantThread);
+                newThread.start();
+    
+                try {
+                    Thread.sleep(100);
+                    newThread.join();
+                } catch (Exception e) {
+                    System.out.println("\nAn error occured joning a thread.");
+                }
             }
         }
     }   

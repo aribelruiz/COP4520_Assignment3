@@ -1,6 +1,6 @@
 package Utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 // Aribel Ruiz
 // 04/13/2023
@@ -13,20 +13,20 @@ import java.util.ArrayList;
 //      Problem 2: Atmospheric Temperature Reading Module.
 
 public class TempReport {
-    public ArrayList<Integer> highestTemps;
-    public ArrayList<Integer> lowestTemps;
+    public List<Integer> highestTemps;
+    public List<Integer> lowestTemps;
     public String intervalStr;
     public int difference;
 
     // Used for 60-minute reports
-    public TempReport(ArrayList<Integer> highTemps, ArrayList<Integer> lowTemps, String interval){
+    public TempReport(List<Integer> highTemps, List<Integer> lowTemps, String interval){
         this.highestTemps = highTemps;
         this.lowestTemps = lowTemps;
         this.intervalStr = interval;
     }
 
     // Used for 10-minute reports
-    public TempReport(ArrayList<Integer> highTemps, ArrayList<Integer> lowTemps, String interval, int difference){
+    public TempReport(List<Integer> highTemps, List<Integer> lowTemps, String interval, int difference){
         this.highestTemps = highTemps;
         this.lowestTemps = lowTemps;
         this.intervalStr = interval;
