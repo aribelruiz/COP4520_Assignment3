@@ -4,6 +4,7 @@ public class ListCounter {
     // ====================================== Class Variables ======================================
     public static int presentsInList = 0;
 
+    // ====================================== Class Functions ======================================
     public synchronized static void incrementPresentsInList() {
         presentsInList++;
     }
