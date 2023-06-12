@@ -1,5 +1,5 @@
-# COP4520_Assignment3 (Two Parts)
-Below you can find the ReadMe for Problem 1 and Problem 2 of Assignment 3 for Concepts of Parallel and Distributed Processing. 
+# Multi-Threaded Practice 2
+Below you can find the ReadMe for two separate problems, Birthday Presents Party and Temperature Module. 
 
 # Problem 1: Birthday Presents Party
 ## How to Run Program 1 (Problem 1)
