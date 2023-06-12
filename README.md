@@ -1,4 +1,4 @@
-# Multi-Threaded Practice 2
+# Multi-threaded Practice (Party & Temperature Module Problems)
 Below you can find the ReadMe for two separate problems, Birthday Presents Party and Temperature Module. 
 
 # Problem 1: Birthday Presents Party
